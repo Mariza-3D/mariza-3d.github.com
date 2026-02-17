@@ -1,0 +1,63 @@
+/* Print Styles */
+@media print {
+
+    /* Hide non-essential elements */
+    header,
+    nav,
+    .no-print,
+    button,
+    .fixed,
+    .sticky,
+    canvas,
+    video,
+    iframe {
+        display: none !important;
+    }
+
+    /* Reset colors for better printing */
+    * {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    /* Optimize page breaks */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        page-break-after: avoid;
+    }
+
+    img {
+        max-width: 100% !important;
+        page-break-inside: avoid;
+    }
+
+    /* Show links */
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    /* Remove gradients and effects */
+    .bg-gradient-to-r,
+    .bg-gradient-to-br,
+    .glass {
+        background: white !important;
+        backdrop-filter: none !important;
+    }
+
+    /* Optimize layout */
+    body {
+        margin: 0;
+        padding: 1cm;
+    }
+
+    section {
+        page-break-inside: avoid;
+        margin-bottom: 2cm;
+    }
+}
