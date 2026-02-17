@@ -1,16 +1,305 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ky">
 
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mariza 3D Course</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mariza 3D - 3D Анимация Курсу</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 </head>
 
 <body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p>Жүктөлүүдө...</p>
+      <div class="loading-bar">
+        <div class="loading-progress" id="loading-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3D Background Canvas -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- Custom Cursor -->
+  <div id="custom-cursor" class="custom-cursor">
+    <div class="cursor-dot"></div>
+    <div class="cursor-trail"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav id="navbar" class="navbar">
+    <div class="container nav-container">
+      <div class="logo">Mariza 3D</div>
+
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#hero" class="nav-link">Башкы бет</a></li>
+        <li><a href="#software" class="nav-link">Программалар</a></li>
+        <li><a href="#models" class="nav-link">3D Модельдер</a></li>
+        <li><a href="#results" class="nav-link">Жыйынтыктар</a></li>
+        <li><a href="#instructor" class="nav-link">Устат</a></li>
+        <li><a href="#curriculum" class="nav-link">Программа</a></li>
+        <li><a href="#pricing" class="nav-link">Баа</a></li>
+        <li><a href="#contact" class="nav-link">Байланыш</a></li>
+      </ul>
+
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero section">
+    <div class="container hero-content">
+      <h1 class="hero-title animate-fade-in">
+        <span class="gradient-text">3D Анимация</span><br>
+        Кесиптик Курсу
+      </h1>
+      <p class="hero-subtitle animate-fade-in">
+        Blender, After Effects жана башка программалар менен 3D анимация чеберчилигин үйрөнүңүз
+      </p>
+      <div class="hero-buttons animate-fade-in">
+        <a href="#pricing" class="btn btn-primary">Катталуу</a>
+        <a href="#curriculum" class="btn btn-secondary">Толук Маалымат</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Info Bar -->
+  <section class="info-bar">
+    <div class="container info-container">
+      <div class="info-item animate-slide">
+        <div class="info-icon">⏱️</div>
+        <div class="info-text">
+          <h4>8 Жума</h4>
+          <p>Курс узактыгы</p>
+        </div>
+      </div>
+      <div class="info-item animate-slide">
+        <div class="info-icon">👥</div>
+        <div class="info-text">
+          <h4>15+ Студент</h4>
+          <p>Топто</p>
+        </div>
+      </div>
+      <div class="info-item animate-slide">
+        <div class="info-icon">🎓</div>
+        <div class="info-text">
+          <h4>Сертификат</h4>
+          <p>Аяктаганында</p>
+        </div>
+      </div>
+      <div class="info-item animate-slide">
+        <div class="info-icon">💼</div>
+        <div class="info-text">
+          <h4>Портфолио</h4>
+          <p>Жеке</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Software Grid -->
+  <section id="software" class="section software-section">
+    <div class="container">
+      <h2 class="section-title animate-fade">Программалар менен иштөө</h2>
+      <div class="software-grid">
+        <!-- Will be populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Model Viewer -->
+  <section id="models" class="section model-viewer-section">
+    <div class="container">
+      <h2 class="section-title animate-fade">
+        <span class="gradient-text">3D Модельдер</span>
+      </h2>
+      <p class="section-subtitle">Студенттердин иштери</p>
+
+      <div class="model-viewer-container">
+        <canvas id="model-canvas"></canvas>
+        <div class="model-controls">
+          <button class="model-btn model-prev" id="model-prev">←</button>
+          <button class="model-btn model-next" id="model-next">→</button>
+        </div>
+        <div class="model-info" id="model-info">
+          <h3></h3>
+          <p></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Student Results -->
+  <section id="results" class="section results-section">
+    <div class="container">
+      <h2 class="section-title animate-fade">Жыйынтыктар</h2>
+      <div class="results-grid">
+        <!-- Will be populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Instructor -->
+  <section id="instructor" class="section instructor-section">
+    <div class="container">
+      <div class="instructor-card animate-fade">
+        <div class="instructor-gradient-bg"></div>
+        <div class="instructor-content">
+          <div class="instructor-info">
+            <div class="instructor-header">
+              <h2>Жаназ Сай Эргашова</h2>
+              <p class="instructor-title">3D Дизайнер & Инструктор</p>
+            </div>
+            <!-- Will add full instructor info via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Curriculum -->
+  <section id="curriculum" class="section curriculum-section">
+    <div class="container">
+      <h2 class="section-title animate-fade">Программа</h2>
+      <div class="curriculum-list" id="curriculum-list">
+        <!-- Will be populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="section pricing-section">
+    <div class="container">
+      <h2 class="section-title animate-fade">Баа</h2>
+      <p class="section-subtitle">Өзүңө ылайыктуу варианттты тандагыла</p>
+
+      <!-- Countdown Timer -->
+      <div class="countdown-container" id="countdown">
+        <span class="countdown-icon">⚡</span>
+        <span class="countdown-text">1-мартка чейин арзандатуу:</span>
+        <div class="countdown-timer">
+          <span id="days">11</span>д
+          <span id="hours">5</span>с
+          <span id="minutes">17</span>м
+          <span id="seconds">19</span>сек
+        </div>
+      </div>
+
+      <div class="pricing-cards">
+        <!-- Will be populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section testimonials-section">
+    <div class="container">
+      <h2 class="section-title animate-fade">Студенттердин пикири</h2>
+      <div class="testimonials-grid" id="testimonials">
+        <!-- Will be populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section faq-section">
+    <div class="container">
+      <h2 class="section-title animate-fade">Көп Берилүүчү Суроолор</h2>
+      <div class="faq-list" id="faq-list">
+        <!-- Will be populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="section final-cta">
+    <div class="container">
+      <div class="cta-card animate-fade">
+        <div class="cta-background"></div>
+        <div class="cta-content">
+          <h2>3D Дүйнөсүнө кириңиз!</h2>
+          <p>Азыр катталып, кесиптик 3D аниматор болуңуз</p>
+          <a href="#pricing" class="btn btn-primary btn-lg">Азыр Катталуу</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact" class="footer">
+    <div class="container footer-content">
+      <h3 class="footer-title gradient-text">3D Анимация Курсу</h3>
+
+      <div class="social-links">
+        <a href="https://www.instagram.com/mariza_online3d/" target="_blank" rel="noopener noreferrer"
+          class="social-link">
+          <img src="assets/icons/instagram.png" alt="Instagram">
+        </a>
+        <a href="https://t.me/+996508128008" target="_blank" rel="noopener noreferrer" class="social-link">
+          <img src="assets/icons/telegram.png" alt="Telegram">
+        </a>
+        <a href="https://wa.me/996508128008" target="_blank" rel="noopener noreferrer" class="social-link">
+          <img src="assets/icons/whatsapp.png" alt="WhatsApp">
+        </a>
+      </div>
+
+      <div class="footer-links">
+        <a href="#">Биз жөнүндө</a>
+        <a href="#contact">Байланыш</a>
+        <a href="#">Шарттар</a>
+        <a href="#">Купуялуулук</a>
+      </div>
+
+      <p class="copyright">
+        © 2025 Mariza 3D Animation Course. Бардык укуктар корголгон. • v0.1.0
+      </p>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="back-to-top">↑</button>
+
+  <!-- Cookie Consent -->
+  <div id="cookie-consent" class="cookie-consent">
+    <div class="cookie-content">
+      <span class="cookie-icon">🍪</span>
+      <div class="cookie-text">
+        <h4>Биз cookie колдонобуз</h4>
+        <p>Биздин веб-сайт колдонуучу тажрыйбасын жакшыртуу жана аналитика үчүн cookie колдонот.</p>
+      </div>
+      <div class="cookie-buttons">
+        <button id="cookie-accept" class="btn btn-primary btn-sm">Макул</button>
+        <button id="cookie-decline" class="btn btn-secondary btn-sm">Жок</button>
+      </div>
+      <button id="cookie-close" class="cookie-close">×</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="js/main.js"></script>
 </body>
 
 </html>

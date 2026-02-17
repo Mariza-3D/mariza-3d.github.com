@@ -1,0 +1,131 @@
+/* ====================================
+   SCROLL ANIMATIONS
+   ==================================== */
+
+.animate-fade,
+.animate-fade-in,
+.animate-slide {
+    opacity: 0;
+    transition: all 0.8s ease;
+}
+
+.animate-fade.visible,
+.animate-fade-in.visible {
+    opacity: 1;
+}
+
+.animate-slide.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.animate-slide {
+    transform: translateY(30px);
+}
+
+/* Individual animation delays */
+.animate-slide:nth-child(1) {
+    transition-delay: 0.1s;
+}
+
+.animate-slide:nth-child(2) {
+    transition-delay: 0.2s;
+}
+
+.animate-slide:nth-child(3) {
+    transition-delay: 0.3s;
+}
+
+.animate-slide:nth-child(4) {
+    transition-delay: 0.4s;
+}
+
+.animate-slide:nth-child(5) {
+    transition-delay: 0.5s;
+}
+
+/* Hero animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-title,
+.hero-subtitle,
+.hero-buttons {
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.hero-subtitle {
+    animation-delay: 0.2s;
+}
+
+.hero-buttons {
+    animation-delay: 0.4s;
+}
+
+/* Gradient animation */
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.gradient-text {
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+}
+
+/* Pulse animation for buttons */
+@keyframes pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.7);
+    }
+
+    50% {
+        box-shadow: 0 0 0 10px rgba(20, 184, 166, 0);
+    }
+}
+
+.btn-primary:hover {
+    animation: pulse 1.5s infinite;
+}
+
+/* Float animation for 3D elements */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Rotate animation */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
