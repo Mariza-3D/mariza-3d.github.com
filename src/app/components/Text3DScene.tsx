@@ -1,7 +1,6 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { useRef, useMemo, Suspense, useEffect, Component } from 'react';
-import { Physics, RigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
 
 // Error boundary
@@ -85,6 +84,12 @@ const FloatingModel = ({
         const yOffset = Math.sin(t * floatSpeed) * floatAmplitude;
         const xOffset = Math.sin(t * floatSpeed * 0.6 + 2) * floatAmplitude * 0.4;
 
+        // Position: initial + float offset only (no parallax)
+        const px = initialPos.current[0] + xOffset;
+        const py = initialPos.current[1] + yOffset;
+        const pz = initialPos.current[2];
+        groupRef.current.position.set(px, py, pz);
+
         // Gentle rotation
         groupRef.current.rotation.y += rotationSpeed[1];
         groupRef.current.rotation.x += rotationSpeed[0];
@@ -101,19 +106,7 @@ const FloatingModel = ({
         groupRef.current.rotation.x = Math.max(-maxTilt, Math.min(maxTilt, groupRef.current.rotation.x));
     });
 
-    return (
-        <RigidBody
-            position={position}
-            colliders="ball"
-            restitution={0.8}
-            friction={0.1}
-            linearDamping={2}
-            angularDamping={1}
-            gravityScale={0.1}
-        >
-            <primitive ref={groupRef} object={clonedScene} scale={scale} />
-        </RigidBody>
-    );
+    return <primitive ref={groupRef} object={clonedScene} scale={scale} />;
 };
 
 // Scene with models
@@ -222,9 +215,7 @@ const Text3DScene = () => {
                     frameloop="always"
                 >
                     <Suspense fallback={null}>
-                        <Physics gravity={[0, -0.5, 0]} debug={false}>
-                            <ModelsScene />
-                        </Physics>
+                        <ModelsScene />
                     </Suspense>
                 </Canvas>
             </div>

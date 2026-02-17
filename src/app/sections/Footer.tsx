@@ -49,7 +49,7 @@ const Footer = () => {
                 </div>
 
                 <p className="text-center text-sm text-gray-500">
-                    © 2026 3D Animation Course. Бардык укуктар корголгон.
+                    © 2025 Mariza 3D Animation Course. Бардык укуктар корголгон. • v0.0.2
                 </p>
             </div>
         </footer>

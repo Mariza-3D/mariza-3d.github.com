@@ -54,15 +54,17 @@ const Pricing = () => {
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true, amount: 0.5 }}
-                            className="inline-flex items-center gap-4 bg-gradient-to-r from-orange-500/20 to-red-500/20 backdrop-blur-xl border border-orange-400/30 rounded-full px-6 py-3"
+                            className="inline-flex flex-col sm:flex-row items-center gap-2 sm:gap-4 bg-gradient-to-r from-orange-500/20 to-red-500/20 backdrop-blur-xl border border-orange-400/30 rounded-2xl px-4 sm:px-6 py-3 max-w-full"
                         >
-                            <Zap className="w-5 h-5 text-orange-400" />
-                            <span className="text-white font-semibold">1-мартка чейин арзандатуу:</span>
-                            <div className="flex gap-2 font-mono font-bold">
-                                <span className="bg-orange-500/30 px-2 py-1 rounded">{timeLeft.days}д</span>
-                                <span className="bg-orange-500/30 px-2 py-1 rounded">{timeLeft.hours}с</span>
-                                <span className="bg-orange-500/30 px-2 py-1 rounded">{timeLeft.mins}м</span>
-                                <span className="bg-orange-500/30 px-2 py-1 rounded">{timeLeft.seconds}сек</span>
+                            <div className="flex items-center gap-2">
+                                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-orange-400 flex-shrink-0" />
+                                <span className="text-white font-semibold text-sm sm:text-base text-center">1-мартка чейин арзандатуу:</span>
+                            </div>
+                            <div className="flex gap-1.5 sm:gap-2 font-mono font-bold text-sm sm:text-base">
+                                <span className="bg-orange-500/30 px-2 py-1 rounded min-w-[45px] text-center">{timeLeft.days}д</span>
+                                <span className="bg-orange-500/30 px-2 py-1 rounded min-w-[40px] text-center">{timeLeft.hours}с</span>
+                                <span className="bg-orange-500/30 px-2 py-1 rounded min-w-[40px] text-center">{timeLeft.mins}м</span>
+                                <span className="bg-orange-500/30 px-2 py-1 rounded min-w-[50px] text-center">{timeLeft.seconds}сек</span>
                             </div>
                         </motion.div>
                     )}
