@@ -7,6 +7,8 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
@@ -44,7 +46,6 @@
     "@radix-ui/react-tooltip": "1.1.8",
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
-    "@react-three/rapier": "^2.2.0",
     "@types/three": "^0.182.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
@@ -77,12 +78,13 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.1.12",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
+    "@types/react": "^18.3.28",
+    "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "4.7.0",
     "gh-pages": "^6.3.0",
     "tailwindcss": "4.1.12",
-    "vite": "6.3.5"
+    "typescript": "^5.9.3",
+    "vite": "^6.4.2"
   },
   "peerDependenciesMeta": {
     "react": {
@@ -94,7 +96,7 @@
   },
   "pnpm": {
     "overrides": {
-      "vite": "6.3.5"
+      "vite": "6.4.2"
     }
   }
 }

@@ -1,185 +1,143 @@
-import { ChevronDown, ChevronRight, Play, Sparkles } from 'lucide-react';
-import { motion, useScroll, useSpring, useTransform, useMotionValue } from 'motion/react';
-import { useEffect } from 'react';
+import { ArrowRight, MessageCircle } from 'lucide-react';
+import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
+import type { PointerEvent } from 'react';
+import curatorImage from '../../assets/brand/curator-silhouette.svg';
+import heroTexture from '../../assets/brand/hero-red-3d-texture.jpg';
+import marizaLogo from '../../assets/brand/mariza-logo.svg';
+import { contactLinks } from '../siteData';
 
 const Hero = () => {
-    // Optimization: Use MotionValues instead of State to prevent re-renders on mouse move
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const smoothX = useSpring(pointerX, { stiffness: 80, damping: 24, mass: 0.4 });
+  const smoothY = useSpring(pointerY, { stiffness: 80, damping: 24, mass: 0.4 });
+  const glowX = useTransform(smoothX, [-1, 1], [-260, 260]);
+  const glowY = useTransform(smoothY, [-1, 1], [-150, 150]);
+  const textureX = useTransform(smoothX, [-1, 1], [18, -18]);
+  const textureY = useTransform(smoothY, [-1, 1], [12, -12]);
+  const portraitX = useTransform(smoothX, [-1, 1], [-18, 18]);
+  const portraitY = useTransform(smoothY, [-1, 1], [-10, 10]);
+  const portraitRotate = useTransform(smoothX, [-1, 1], [-2.5, 2.5]);
+  const titleX = useTransform(smoothX, [-1, 1], [7, -7]);
 
-    const { scrollY } = useScroll();
-    const y1 = useTransform(scrollY, [0, 500], [0, 150]);
-    const y2 = useTransform(scrollY, [0, 500], [0, -50]);
-    const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    pointerX.set(((event.clientX - rect.left) / rect.width - 0.5) * 2);
+    pointerY.set(((event.clientY - rect.top) / rect.height - 0.5) * 2);
+  };
 
-    const springConfig = { stiffness: 100, damping: 30 };
-    const mouseXSpring = useSpring(mouseX, springConfig);
-    const mouseYSpring = useSpring(mouseY, springConfig);
+  const resetPointer = () => {
+    pointerX.set(0);
+    pointerY.set(0);
+  };
 
-    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['15deg', '-15deg']);
-    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-15deg', '15deg']);
+  return (
+    <section
+      id="hero"
+      className="mariza-hero relative isolate min-h-screen overflow-hidden px-4 pb-14 pt-24 sm:px-6 lg:px-8"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={resetPointer}
+    >
+      <div className="mariza-hero-bg" aria-hidden="true">
+        <motion.img src={heroTexture} alt="" className="mariza-hero-texture" style={{ x: textureX, y: textureY, scale: 1.04 }} />
+        <div className="mariza-hero-grid" />
+        <div className="mariza-hero-redline mariza-hero-redline-one" />
+        <div className="mariza-hero-redline mariza-hero-redline-two" />
+        <div className="mariza-hero-sweep" />
+        <motion.div className="mariza-hero-cursor-light" style={{ x: glowX, y: glowY }} />
+      </div>
 
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            const x = (e.clientX / window.innerWidth) - 0.5;
-            const y = (e.clientY / window.innerHeight) - 0.5;
-            mouseX.set(x);
-            mouseY.set(y);
-        };
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, [mouseX, mouseY]);
+      <div className="relative z-10 mx-auto grid min-h-[calc(100vh-7rem)] w-full max-w-[1400px] items-center gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,0.78fr)]">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.08, delayChildren: 0.08 } },
+          }}
+          className="relative z-20 mx-auto w-full min-w-0 max-w-3xl text-center lg:mx-0 lg:text-left"
+        >
+          <motion.img
+            src={marizaLogo}
+            alt="Mariza"
+            variants={{
+              hidden: { opacity: 0, y: 16, scale: 0.94 },
+              visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
+            }}
+            className="mariza-hero-logo mx-auto mb-8 h-auto w-36 drop-shadow-[0_22px_60px_rgba(227,0,8,0.25)] sm:w-44 lg:mx-0"
+          />
 
-    return (
-        <section id="hero" className="relative z-10 min-h-screen flex items-center justify-center pt-20 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
-            {/* Animated gradient orbs */}
-            <motion.div
-                className="absolute top-20 -left-40 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
-                style={{ y: y1 }}
-            />
-            <motion.div
-                className="absolute bottom-20 -right-40 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl"
-                style={{ y: y2 }}
-            />
+          <motion.h1
+            variants={{
+              hidden: { opacity: 0, y: 22, filter: 'blur(10px)' },
+              visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] } },
+            }}
+            style={{ x: titleX }}
+            className="mariza-hero-title text-6xl font-black leading-none text-[#fff8ed] sm:text-7xl lg:text-8xl xl:text-9xl"
+          >
+            MARIZA
+            <span className="block text-[#fb171d]">ONLINE</span>
+          </motion.h1>
 
-            <div className="max-w-[1400px] mx-auto w-full relative z-10">
-                <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-                    {/* Left: Kinetic Typography & CTA */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8 }}
-                        style={{ opacity }}
-                        className="relative z-10"
-                    >
-                        <div className="mb-6">
-                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight">
-                                <div className="block mb-2 whitespace-nowrap">
-                                    <span className="text-white" style={{ textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(255,107,53,0.6)' }}>
-                                        3D Анимация
-                                    </span>
-                                </div>
-                                <div className="block whitespace-nowrap">
-                                    <span className="bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">
-                                        жана YouTube
-                                    </span>
-                                </div>
-                            </h1>
-                        </div>
+          <motion.p
+            variants={{
+              hidden: { opacity: 0, y: 18 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
+            }}
+            className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-[#e5e9f0] sm:text-2xl sm:leading-10 lg:mx-0"
+          >
+            3D анимация, каармандар жана YouTube монетизация боюнча практикалык онлайн курс. Нөлдөн баштап Blender, iClone, монтаж жана канал өстүрүү системасына чейин.
+          </motion.p>
 
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.8 }}
-                            className="text-xl sm:text-2xl lg:text-3xl text-gray-300 mb-10 leading-relaxed max-w-2xl"
-                        >
-                            Өзүңдүн каармандарыңды жаратып, YouTube дан акча тап
-                        </motion.p>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 1 }}
-                            className="flex flex-col sm:flex-row gap-4"
-                        >
-                            <motion.button
-                                whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(45, 212, 191, 0.5)' }}
-                                whileTap={{ scale: 0.98 }}
-                                className="relative px-10 py-5 rounded-3xl text-lg font-bold bg-gradient-to-r from-teal-400 to-teal-500 text-gray-900 shadow-2xl overflow-hidden group"
-                            >
-                                <span className="relative z-10 flex items-center justify-center gap-2">
-                                    Курска жазылуу <ChevronRight className="w-5 h-5" />
-                                </span>
-                                <motion.div
-                                    className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400"
-                                    initial={{ x: '100%' }}
-                                    whileHover={{ x: 0 }}
-                                    transition={{ duration: 0.3 }}
-                                />
-                            </motion.button>
-
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.98 }}
-                                className="px-10 py-5 rounded-3xl text-lg font-semibold border-2 border-teal-400/50 backdrop-blur-xl bg-white/5 hover:bg-white/10 transition-all"
-                            >
-                                Демо көрүү
-                            </motion.button>
-                        </motion.div>
-                    </motion.div>
-
-                    {/* Right: Enhanced 3D Viewer with Mouse Follow (Optimized) */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 1, delay: 0.3 }}
-                        className="relative perspective-1000"
-                    >
-                        <motion.div
-                            className="relative aspect-square max-w-[500px] lg:max-w-[600px] mx-auto"
-                            style={{
-                                rotateX,
-                                rotateY,
-                                transformStyle: 'preserve-3d',
-                            }}
-                        >
-                            {/* Glassmorphism container */}
-                            <div className="absolute inset-0 rounded-[3rem] bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl border border-white/20 shadow-2xl overflow-hidden transform-style-3d">
-                                {/* 3D Interactive viewer placeholder */}
-                                <div className="w-full h-full relative group">
-                                    <div className="absolute inset-0 p-8">
-                                        <img
-                                            src="https://images.unsplash.com/photo-1698078038619-7f94733f9413?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHwzRCUyMGFuaW1hdGlvbiUyMGNoYXJhY3RlciUyMGNyZWF0b3IlMjBkZXNrdG9wJTIwd29ya3NwYcGVufDF8fHx8MTc3MTIzNzE3Nnww&ixlib=rb-4.1.0&q=80&w=1080"
-                                            alt="3D Character"
-                                            className="w-full h-full object-cover rounded-3xl transform transition-transform duration-700 group-hover:scale-105"
-                                        />
-                                    </div>
-                                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/40 to-transparent rounded-3xl">
-                                        <motion.div
-                                            animate={{ scale: [1, 1.1, 1] }}
-                                            transition={{ duration: 2, repeat: Infinity }}
-                                        >
-                                            <Play className="w-20 h-20 text-white opacity-80" strokeWidth={1.5} />
-                                        </motion.div>
-                                    </div>
-                                </div>
-
-                                {/* Floating elements around 3D viewer */}
-                                <motion.div
-                                    className="absolute top-6 right-6 px-4 py-2 rounded-2xl bg-teal-400/90 backdrop-blur-sm text-gray-900 font-bold text-sm shadow-lg z-20"
-                                    animate={{ y: [0, -10, 0] }}
-                                    transition={{ duration: 2, repeat: Infinity }}
-                                >
-                                    <Sparkles className="w-4 h-4 inline mr-1" /> Интерактивдүү
-                                </motion.div>
-                            </div>
-
-                            {/* Glow effect */}
-                            <div className="absolute inset-0 rounded-[3rem] bg-gradient-to-br from-teal-400/20 to-purple-400/20 blur-3xl -z-10" />
-                        </motion.div>
-
-                        <motion.p
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 1.5 }}
-                            className="text-center mt-6 text-gray-400 text-sm"
-                        >
-                            Айланткыла жана zoom кылгыла
-                        </motion.p>
-                    </motion.div>
-                </div>
-            </div>
-
-            {/* Scroll indicator */}
-            <motion.div
-                className="absolute bottom-8 left-1/2 -translate-x-1/2"
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 18 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } },
+            }}
+            className="mt-9 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start"
+          >
+            <motion.a
+              href={contactLinks.whatsapp}
+              target="_blank"
+              rel="noreferrer"
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-lg bg-[#fb171d] px-7 py-4 text-base font-black text-white shadow-[0_22px_70px_rgba(251,23,29,0.32)] transition-colors hover:bg-[#ff383d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#fb171d] sm:w-auto"
             >
-                <ChevronDown className="w-8 h-8 text-teal-400/60" />
-            </motion.div>
-        </section>
-    );
+              Курска жазылуу
+              <ArrowRight className="h-5 w-5" />
+            </motion.a>
+
+            <motion.a
+              href="#curriculum"
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-lg border border-white/18 bg-white/[0.06] px-7 py-4 text-base font-bold text-[#fff8ed] backdrop-blur-xl transition-colors hover:bg-white/[0.1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:w-auto"
+            >
+              <MessageCircle className="h-5 w-5" />
+              Программаны көрүү
+            </motion.a>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98, y: 18 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.95, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+          style={{ x: portraitX, y: portraitY, rotate: portraitRotate }}
+          className="pointer-events-none absolute bottom-[-6rem] right-[-7.5rem] z-0 flex h-[520px] w-[390px] max-w-none items-end justify-center opacity-45 sm:bottom-[-8rem] sm:right-[-4rem] sm:h-[640px] sm:w-[480px] lg:pointer-events-auto lg:relative lg:bottom-auto lg:right-auto lg:z-auto lg:mx-auto lg:h-[680px] lg:w-full lg:max-w-[520px] lg:opacity-100"
+          aria-label="Куратор Mariza Online"
+        >
+          <div className="mariza-portrait-light" aria-hidden="true" />
+          <img src={marizaLogo} alt="" className="mariza-portrait-logo pointer-events-none absolute" aria-hidden="true" />
+          <img src={curatorImage} alt="Mariza Online куратор" className="mariza-portrait-image relative z-10 h-full w-auto object-contain" />
+          <div className="mariza-portrait-floor" aria-hidden="true" />
+        </motion.div>
+      </div>
+
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-32 bg-gradient-to-b from-transparent to-[#0b0f18]" aria-hidden="true" />
+    </section>
+  );
 };
 
 export default Hero;

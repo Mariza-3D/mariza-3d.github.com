@@ -1,0 +1,41 @@
+<svg width="820" height="1100" viewBox="0 0 820 1100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="rimGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(430 382) rotate(90) scale(472 310)">
+      <stop stop-color="#FB1B20" stop-opacity="0.24"/>
+      <stop offset="0.48" stop-color="#60E6D2" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cloth" x1="174" y1="77" x2="606" y2="1037" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101216"/>
+      <stop offset="0.42" stop-color="#030405"/>
+      <stop offset="1" stop-color="#000000"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="130" y1="167" x2="695" y2="901" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#30343B"/>
+      <stop offset="0.42" stop-color="#0B0D10"/>
+      <stop offset="1" stop-color="#22262D"/>
+    </linearGradient>
+    <filter id="portraitShadow" x="-60" y="-20" width="940" height="1200" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="38" stdDeviation="42" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+  <g filter="url(#portraitShadow)">
+    <path d="M69 1098C83 919 128 772 244 681C292 643 354 622 413 622C471 622 532 644 579 683C695 779 742 921 758 1098H69Z" fill="url(#cloth)"/>
+    <path d="M124 1098C130 935 185 821 287 740L344 704L411 873L480 704L538 740C642 823 691 936 700 1098H124Z" fill="#020303"/>
+    <path d="M176 1098C197 950 240 833 326 754L411 1011L496 754C584 834 629 949 650 1098H176Z" fill="#060708"/>
+    <path d="M251 333C248 237 309 124 413 103C535 79 616 189 605 330C591 511 518 670 413 670C306 670 257 512 251 333Z" fill="#010101"/>
+    <path d="M214 320C209 222 280 108 398 75C500 46 613 92 650 196C606 178 559 179 517 199C487 147 428 136 372 154C297 177 246 246 236 330C229 392 238 457 257 515C228 471 216 397 214 320Z" fill="url(#cloth)"/>
+    <path d="M260 634C237 555 223 464 239 350C253 246 323 171 416 171C520 171 588 250 589 363C591 474 572 565 545 636C621 596 690 517 693 373C698 165 583 31 410 31C239 31 127 158 129 362C130 504 190 591 260 634Z" fill="url(#edge)"/>
+    <path d="M279 335C290 237 344 189 416 189C491 189 538 239 547 335C563 496 505 610 413 610C320 610 262 492 279 335Z" fill="#000000"/>
+    <path d="M583 379C616 425 653 427 678 393C648 404 618 393 583 345V379Z" fill="#0B0C10"/>
+    <path d="M235 381C202 426 165 427 140 393C170 404 201 393 235 345V381Z" fill="#0B0C10"/>
+    <path d="M242 692L341 752L284 917L171 792L242 692Z" fill="#0A0C10"/>
+    <path d="M580 692L481 752L538 917L651 792L580 692Z" fill="#0A0C10"/>
+    <path d="M411 273C454 273 486 300 486 340C486 375 466 394 440 409C423 419 418 429 418 447V462H374V442C374 406 392 388 418 373C437 361 448 353 448 338C448 322 434 311 412 311C390 311 374 324 369 347H324C331 302 365 273 411 273ZM371 505C371 488 384 476 411 476C438 476 451 488 451 505C451 522 438 535 411 535C384 535 371 522 371 505Z" fill="#FFF8ED"/>
+    <path d="M237 352C247 218 325 121 437 111" stroke="white" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+    <path d="M593 218C621 293 614 414 582 525" stroke="white" stroke-opacity="0.11" stroke-width="8" stroke-linecap="round"/>
+    <path d="M157 1098C178 938 219 826 315 742" stroke="white" stroke-opacity="0.12" stroke-width="5"/>
+    <path d="M657 1098C632 936 589 825 499 742" stroke="white" stroke-opacity="0.1" stroke-width="5"/>
+  </g>
+  <ellipse cx="414" cy="716" rx="338" ry="254" fill="url(#rimGlow)"/>
+</svg>

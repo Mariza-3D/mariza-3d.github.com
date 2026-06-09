@@ -1,192 +1,154 @@
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, OrbitControls } from '@react-three/drei';
-import { useRef, useState, Suspense } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { OrbitControls, useGLTF } from '@react-three/drei';
+import { ChevronLeft, ChevronRight, Rotate3D } from 'lucide-react';
+import { motion } from 'motion/react';
+import { Suspense, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import * as THREE from 'three';
+import afterEffectsModel from '../../../assets/3d_models/after_effects_ui_compressed.glb';
+import blenderModel from '../../../assets/3d_models/blender_3d_logo_compressed.glb';
+import davinciModel from '../../../assets/3d_models/davinci_resolve_3d_logo_compressed.glb';
+import youtubeModel from '../../../assets/3d_models/youtube-logo.glb';
 
-// Model configurations
 const MODELS = [
-    {
-        name: 'Blender',
-        path: '/assets/3d_models/blender_3d_logo_compressed.glb',
-        scale: 5.5,
-        description: '3D моделдөө жана анимация',
-    },
-    {
-        name: 'After Effects',
-        path: '/assets/3d_models/after_effects_ui_compressed.glb',
-        scale: 0.75,
-        description: 'Видео композиция жана эффекттер',
-    },
-    {
-        name: 'DaVinci Resolve',
-        path: '/assets/3d_models/davinci_resolve_3d_logo_compressed.glb',
-        scale: 1.2,
-        description: 'Видео монтаж жана түс коррекция',
-    },
-    {
-        name: 'YouTube',
-        path: '/assets/3d_models/youtube-logo.glb',
-        scale: 0.4,
-        description: 'Контент жарыялоо',
-    },
+  {
+    name: 'Blender',
+    path: blenderModel,
+    scale: 5.2,
+    description: '3D моделдөө жана анимациянын негизги борбору',
+  },
+  {
+    name: 'After Effects',
+    path: afterEffectsModel,
+    scale: 0.75,
+    description: 'Композиция, эффекттер жана финалдык motion polish',
+  },
+  {
+    name: 'DaVinci Resolve',
+    path: davinciModel,
+    scale: 1.2,
+    description: 'Монтаж, түс коррекция жана финалдык экспорт',
+  },
+  {
+    name: 'YouTube',
+    path: youtubeModel,
+    scale: 0.42,
+    description: 'Контент жарыялоо, SEO жана монетизация',
+  },
 ];
 
 interface ModelProps {
-    modelPath: string;
-    scale: number;
+  modelPath: string;
+  scale: number;
 }
 
 const Model = ({ modelPath, scale }: ModelProps) => {
-    const groupRef = useRef<THREE.Group>(null);
-    const { scene } = useGLTF(modelPath);
+  const groupRef = useRef<THREE.Group>(null);
+  const { scene } = useGLTF(modelPath);
 
-    // Optional auto-rotation (commented out by default)
-    useFrame(() => {
-        if (!groupRef.current) return;
+  useFrame(({ clock }) => {
+    if (!groupRef.current) return;
+    groupRef.current.rotation.y = Math.sin(clock.getElapsedTime() * 0.45) * 0.18;
+    groupRef.current.position.y = Math.sin(clock.getElapsedTime() * 0.8) * 0.08;
+  });
 
-        // Uncomment below to enable auto-rotation
-        // groupRef.current.rotation.y += 0.005;
-    });
-
-    return <primitive ref={groupRef} object={scene.clone()} scale={scale} />;
+  return <primitive ref={groupRef} object={scene.clone()} scale={scale} />;
 };
 
 const ModelViewer = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentModel = MODELS[currentIndex];
 
-    const nextModel = () => {
-        setCurrentIndex((prev) => (prev + 1) % MODELS.length);
-    };
+  const nextModel = () => setCurrentIndex((prev) => (prev + 1) % MODELS.length);
+  const prevModel = () => setCurrentIndex((prev) => (prev - 1 + MODELS.length) % MODELS.length);
 
-    const prevModel = () => {
-        setCurrentIndex((prev) => (prev - 1 + MODELS.length) % MODELS.length);
-    };
+  const handlers = useSwipeable({
+    onSwipedLeft: nextModel,
+    onSwipedRight: prevModel,
+    trackMouse: false,
+    preventScrollOnSwipe: true,
+  });
 
-    // Touch/swipe gesture handlers
-    const handlers = useSwipeable({
-        onSwipedLeft: () => nextModel(),
-        onSwipedRight: () => prevModel(),
-        trackMouse: false, // Only track touch, not mouse
-        preventScrollOnSwipe: true,
-    });
+  return (
+    <section id="models" className="relative px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1400px]">
+        <div className="mb-12 grid gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
+          <div>
+            <p className="section-kicker">Интерактив</p>
+            <h2 className="section-title mt-3">3D Модельдер</h2>
+          </div>
+          <p className="max-w-2xl text-lg leading-8 text-[#c4ccd8] lg:justify-self-end">
+            Модельдерди айлантып көрүп, курста кандай production дүйнө менен иштей турганыңды биринчи экрандан сез.
+          </p>
+        </div>
 
-    const currentModel = MODELS[currentIndex];
+        <div className="grid gap-5 lg:grid-cols-[1fr_360px]">
+          <div className="relative overflow-hidden rounded-lg border border-white/10 bg-[#101722] shadow-[0_24px_100px_rgba(0,0,0,0.34)]">
+            <div className="model-grid" aria-hidden="true" />
+            <div {...handlers} className="relative aspect-[16/10] min-h-[340px]">
+              <Canvas camera={{ position: [0, 0, 5], fov: 45 }} gl={{ antialias: true, alpha: true }} dpr={[1, 1.5]}>
+                <ambientLight intensity={0.8} />
+                <directionalLight position={[5, 5, 5]} intensity={1.1} />
+                <pointLight position={[-3, 2, 3]} intensity={0.65} color="#2dd4bf" />
+                <Suspense fallback={null}>
+                  <Model key={currentModel.path} modelPath={currentModel.path} scale={currentModel.scale} />
+                </Suspense>
+                <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.8} />
+              </Canvas>
 
-    return (
-        <section id="models" className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-            {/* Background gradient */}
-            <motion.div
-                className="absolute top-0 left-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl"
-                animate={{ scale: [1, 1.2, 1], x: [0, 50, 0] }}
-                transition={{ duration: 8, repeat: Infinity }}
-            />
-
-            <div className="max-w-[1400px] mx-auto relative z-10">
-                <motion.h2
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.5 }}
-                    className="text-4xl sm:text-5xl lg:text-6xl font-bold text-center mb-6"
-                >
-                    <span className="bg-gradient-to-r from-white via-teal-200 to-purple-200 bg-clip-text text-transparent">
-                        3D Модельдер
-                    </span>
-                </motion.h2>
-                <p className="text-center text-gray-400 mb-16 text-lg">
-                    Интерактивдүү 360° көрүү
-                </p>
-
-                <div className="max-w-5xl mx-auto">
-                    <div className="glass rounded-3xl p-8 relative">
-                        {/* 3D Canvas */}
-                        <div {...handlers} className="aspect-video bg-gradient-to-br from-gray-900/50 to-gray-800/50 rounded-2xl mb-6 relative overflow-hidden">
-                            <Canvas
-                                camera={{ position: [0, 0, 5], fov: 45 }}
-                                gl={{ antialias: true, alpha: true }}
-                            >
-                                <ambientLight intensity={0.6} />
-                                <directionalLight position={[5, 5, 5]} intensity={1} />
-                                <pointLight position={[-3, 2, 3]} intensity={0.5} color="#2dd4bf" />
-
-                                <Suspense fallback={null}>
-                                    <AnimatePresence mode="wait">
-                                        <Model
-                                            key={currentModel.path}
-                                            modelPath={currentModel.path}
-                                            scale={currentModel.scale}
-                                        />
-                                    </AnimatePresence>
-                                </Suspense>
-
-                                {/* OrbitControls for 360° rotation */}
-                                <OrbitControls
-                                    enableZoom={false}
-                                    enablePan={false}
-                                    autoRotate={false}
-                                    autoRotateSpeed={2}
-                                // Set autoRotate={true} above to enable auto-rotation
-                                />
-                            </Canvas>
-
-                            {/* Navigation Buttons */}
-                            <button
-                                onClick={prevModel}
-                                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all"
-                                aria-label="Previous model"
-                            >
-                                <ChevronLeft className="w-6 h-6" />
-                            </button>
-                            <button
-                                onClick={nextModel}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all"
-                                aria-label="Next model"
-                            >
-                                <ChevronRight className="w-6 h-6" />
-                            </button>
-                        </div>
-
-                        {/* Model Info */}
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={currentModel.name}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -10 }}
-                                transition={{ duration: 0.3 }}
-                                className="text-center"
-                            >
-                                <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-teal-400 to-purple-400 bg-clip-text text-transparent">
-                                    {currentModel.name}
-                                </h3>
-                                <p className="text-gray-400">{currentModel.description}</p>
-                                <div className="flex justify-center gap-2 mt-4">
-                                    {MODELS.map((_, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => setCurrentIndex(index)}
-                                            className={`w-2 h-2 rounded-full transition-all ${index === currentIndex
-                                                ? 'bg-teal-400 w-8'
-                                                : 'bg-gray-600 hover:bg-gray-500'
-                                                }`}
-                                            aria-label={`View model ${index + 1}`}
-                                        />
-                                    ))}
-                                </div>
-                            </motion.div>
-                        </AnimatePresence>
-
-                        {/* Hint */}
-                        <p className="text-center text-gray-500 text-sm mt-6">
-                            💡 Модельди чычкан менен буруп көрүңүз
-                        </p>
-                    </div>
-                </div>
+              <button
+                type="button"
+                onClick={prevModel}
+                className="absolute left-4 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-lg border border-white/10 bg-black/35 text-white backdrop-blur-xl transition-colors hover:bg-white/10"
+                aria-label="Previous model"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+              <button
+                type="button"
+                onClick={nextModel}
+                className="absolute right-4 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-lg border border-white/10 bg-black/35 text-white backdrop-blur-xl transition-colors hover:bg-white/10"
+                aria-label="Next model"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
             </div>
-        </section>
-    );
+          </div>
+
+          <motion.aside
+            key={currentModel.name}
+            initial={{ y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-lg border border-white/10 bg-[#111827]/72 p-6 backdrop-blur-2xl"
+          >
+            <div className="mb-8 grid h-14 w-14 place-items-center rounded-lg bg-[#60e6d2]/12 text-[#bffbf3]">
+              <Rotate3D className="h-7 w-7" />
+            </div>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#8f9bad]">360° көрүү</p>
+            <h3 className="mt-3 text-3xl font-black text-[#fff8ed]">{currentModel.name}</h3>
+            <p className="mt-4 text-base leading-7 text-[#c4ccd8]">{currentModel.description}</p>
+
+            <div className="mt-8 grid gap-3">
+              {MODELS.map((model, index) => (
+                <button
+                  key={model.name}
+                  type="button"
+                  onClick={() => setCurrentIndex(index)}
+                  className={`rounded-lg border px-4 py-3 text-left text-sm font-bold transition-colors ${
+                    index === currentIndex
+                      ? 'border-[#60e6d2]/50 bg-[#60e6d2]/12 text-[#dffff9]'
+                      : 'border-white/10 bg-white/[0.035] text-[#d8deea] hover:bg-white/[0.07]'
+                  }`}
+                >
+                  {model.name}
+                </button>
+              ))}
+            </div>
+          </motion.aside>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default ModelViewer;

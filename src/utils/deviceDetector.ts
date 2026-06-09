@@ -17,7 +17,7 @@ export const hasTouchSupport = (): boolean => {
 };
 
 // Get optimal 3D quality based on device
-export const get3DQuality = (): '3d' | 'low' | 'minimal' => {
+export const get3DQuality = (): 'high' | 'low' | 'minimal' => {
     if (!isMobileDevice()) return 'high';
 
     // Check if it's a powerful mobile device

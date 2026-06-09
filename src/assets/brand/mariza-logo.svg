@@ -1,0 +1,32 @@
+<svg width="720" height="520" viewBox="0 0 720 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="marizaRed" x1="176" y1="67" x2="540" y2="318" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF2024"/>
+      <stop offset="0.48" stop-color="#E40008"/>
+      <stop offset="1" stop-color="#8C0004"/>
+    </linearGradient>
+    <linearGradient id="marizaHighlight" x1="176" y1="54" x2="538" y2="290" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF8A8A"/>
+      <stop offset="0.38" stop-color="#FF1C20"/>
+      <stop offset="1" stop-color="#B60006"/>
+    </linearGradient>
+    <filter id="softShadow" x="112" y="42" width="476" height="322" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="24" stdDeviation="24" flood-color="#420003" flood-opacity="0.36"/>
+    </filter>
+  </defs>
+  <g filter="url(#softShadow)">
+    <path d="M177.5 312.7V128.6C177.5 83.3 229.6 57.8 265.4 85.5L425.3 209.4L497.9 151.6C534.1 122.8 587.5 148.6 587.5 194.8V269.5C587.5 314.7 535.7 340.2 499.9 312.9L341.9 192.7L268 250.7V312.7C268 337.7 247.7 358 222.7 358C197.8 358 177.5 337.7 177.5 312.7Z" fill="url(#marizaRed)"/>
+    <path d="M221.2 87.1C197.4 92.3 179.8 113 179.8 137.8V313.5C179.8 337 198.9 356.2 222.5 356.2C246 356.2 265.2 337 265.2 313.5V129.7C265.2 99.6 239.6 83.1 221.2 87.1Z" fill="url(#marizaHighlight)"/>
+    <path d="M497.4 155L427.4 210.6L501.9 267.2C536.8 293.8 586 268.8 586 225V194.1C586 150.8 531.4 127.9 497.4 155Z" fill="url(#marizaHighlight)"/>
+    <path d="M265.2 129.7L425.2 253.1C460.9 280.7 512.8 255.2 512.8 210.1V174.3L425.3 243.9L265.2 120.7V129.7Z" fill="#830004" fill-opacity="0.48"/>
+    <path d="M183 126.8C183 84 232.3 60 266.1 86.2L423.9 208.5L499.8 148.2C534.4 120.7 586.2 145.3 586.2 189.5" stroke="#FFB0B0" stroke-width="7" stroke-linecap="round" opacity="0.78"/>
+  </g>
+  <g fill="#E30008">
+    <path d="M82 456V392H111L130.5 423.7L150 392H179V456H151.5V424.7L135.4 451H125.4L109.5 425.1V456H82Z"/>
+    <path d="M197.5 456L224.5 392H257.8L284.8 456H255.6L252.5 447.7H229L225.9 456H197.5ZM235.5 428.8H246L240.8 414.4L235.5 428.8Z"/>
+    <path d="M304 456V392H344.8C364.9 392 376.8 402.7 376.8 419.4C376.8 429.2 372.6 436.9 365.3 441.5L379 456H348.8L338.2 444.3H331.7V456H304ZM331.7 423.9H342.2C346.6 423.9 349.1 421.9 349.1 418.5C349.1 415.1 346.6 413.1 342.2 413.1H331.7V423.9Z"/>
+    <path d="M397.8 456V392H426.3V456H397.8Z"/>
+    <path d="M449.2 456V434.7L485.7 414.1H450V392H527.3V413.2L490.8 433.9H528V456H449.2Z"/>
+    <path d="M545.2 456L572.2 392H605.5L632.5 456H603.3L600.2 447.7H576.7L573.6 456H545.2ZM583.2 428.8H593.7L588.5 414.4L583.2 428.8Z"/>
+  </g>
+</svg>

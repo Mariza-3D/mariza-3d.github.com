@@ -1,110 +1,116 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
+import marizaLogo from '../../assets/brand/mariza-logo.svg';
+import { contactLinks } from '../siteData';
+
+const navItems = [
+  { name: 'Башкы бет', href: '#hero' },
+  { name: 'Программалар', href: '#software' },
+  { name: 'Жыйынтыктар', href: '#results' },
+  { name: 'Программа', href: '#curriculum' },
+  { name: 'Баа', href: '#pricing' },
+  { name: 'Байланыш', href: '#contact' },
+];
 
 const Navigation = () => {
-    const [isScrolled, setIsScrolled] = useState(false);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    const navItems = [
-        { name: 'Башкы бет', href: '#hero' },
-        { name: 'Программалар', href: '#software' },
-        { name: '3D Модельдер', href: '#models' },
-        { name: 'Жыйынтыктар', href: '#results' },
-        { name: 'Устат', href: '#instructor' },
-        { name: 'Программа', href: '#curriculum' },
-        { name: 'Баа', href: '#pricing' },
-        { name: 'Байланыш', href: '#contact' },
-    ];
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 24);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
-        };
+  return (
+    <nav
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'border-b border-white/10 bg-[#0b0f18]/86 shadow-[0_20px_70px_rgba(0,0,0,0.26)] backdrop-blur-2xl' : 'bg-transparent'
+      }`}
+    >
+      <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-4 sm:px-6 lg:px-8">
+        <a href="#hero" className="group inline-flex items-center gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-200">
+          <span className="grid h-10 w-10 place-items-center rounded-lg border border-[#fb171d]/25 bg-white/[0.04] p-1 shadow-[0_0_34px_rgba(251,23,29,0.18)]">
+            <img src={marizaLogo} alt="" className="h-full w-full object-contain" />
+          </span>
+          <span className="leading-tight">
+            <span className="block text-base font-black text-[#fff8ed]">Mariza Online</span>
+            <span className="block text-xs text-[#aeb8c7]">Animation Course</span>
+          </span>
+        </a>
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+        <div className="hidden items-center gap-1 lg:flex">
+          {navItems.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="rounded-lg px-4 py-2 text-sm font-semibold text-[#c4ccd8] transition-colors hover:bg-white/[0.07] hover:text-[#fff8ed] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#60e6d2]"
+            >
+              {item.name}
+            </a>
+          ))}
+        </div>
 
-    const scrollToSection = (href: string) => {
-        const element = document.querySelector(href);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-            setIsMobileMenuOpen(false);
-        }
-    };
+        <div className="hidden items-center gap-3 lg:flex">
+          <a href={contactLinks.telegram} target="_blank" rel="noreferrer" className="text-sm font-semibold text-[#c4ccd8] transition-colors hover:text-[#fff8ed]">
+            Telegram
+          </a>
+          <a
+            href={contactLinks.whatsapp}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-lg bg-[#fb171d] px-5 py-3 text-sm font-black text-white transition-colors hover:bg-[#ff383d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#fb171d]"
+          >
+            Жазылуу
+          </a>
+        </div>
 
-    return (
-        <nav
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'glass border-b border-white/10 shadow-lg' : 'bg-transparent'
-                }`}
+        <button
+          type="button"
+          onClick={() => setIsMobileMenuOpen((value) => !value)}
+          className="grid h-11 w-11 place-items-center rounded-lg border border-white/10 bg-white/[0.06] text-white lg:hidden"
+          aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isMobileMenuOpen}
         >
-            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-16">
-                    {/* Logo */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="text-xl font-bold bg-gradient-to-r from-teal-400 to-purple-400 bg-clip-text text-transparent"
-                    >
-                        Mariza 3D
-                    </motion.div>
+          {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </div>
 
-                    {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center space-x-1">
-                        {navItems.map((item, index) => (
-                            <motion.button
-                                key={item.href}
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.05 }}
-                                onClick={() => scrollToSection(item.href)}
-                                className="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all"
-                            >
-                                {item.name}
-                            </motion.button>
-                        ))}
-                    </div>
-
-                    {/* Mobile Menu Button */}
-                    <button
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-all"
-                    >
-                        {isMobileMenuOpen ? (
-                            <X className="w-6 h-6" />
-                        ) : (
-                            <Menu className="w-6 h-6" />
-                        )}
-                    </button>
-                </div>
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            className="border-t border-white/10 bg-[#0b0f18]/96 px-4 pb-5 pt-3 backdrop-blur-2xl lg:hidden"
+          >
+            <div className="mx-auto grid max-w-[1400px] gap-2">
+              {navItems.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="rounded-lg px-4 py-3 text-base font-semibold text-[#d8deea] hover:bg-white/[0.07]"
+                >
+                  {item.name}
+                </a>
+              ))}
+              <a
+                href={contactLinks.whatsapp}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-2 rounded-lg bg-[#fb171d] px-4 py-4 text-center font-black text-white"
+              >
+                WhatsApp аркылуу жазылуу
+              </a>
             </div>
-
-            {/* Mobile Menu */}
-            <AnimatePresence>
-                {isMobileMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden glass border-t border-white/10"
-                    >
-                        <div className="px-4 py-4 space-y-2">
-                            {navItems.map((item) => (
-                                <button
-                                    key={item.href}
-                                    onClick={() => scrollToSection(item.href)}
-                                    className="block w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all"
-                                >
-                                    {item.name}
-                                </button>
-                            ))}
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </nav>
-    );
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
 };
 
 export default Navigation;

@@ -31,10 +31,10 @@ const BackToTop = () => {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={scrollToTop}
-                    className="fixed bottom-8 right-8 z-40 p-4 rounded-full glass border border-white/20 shadow-xl hover:shadow-2xl transition-all group"
+                    className="fixed bottom-8 right-8 z-40 rounded-full border border-white/20 bg-[#111827]/80 p-4 shadow-xl backdrop-blur-xl transition-all hover:shadow-2xl group"
                     aria-label="Back to top"
                 >
-                    <div className="absolute inset-0 bg-gradient-to-br from-teal-400/20 to-purple-400/20 rounded-full blur group-hover:blur-md transition-all" />
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#60e6d2]/20 to-[#f8c85f]/20 blur transition-all group-hover:blur-md" />
                     <ChevronUp className="w-6 h-6 text-white relative z-10" />
                 </motion.button>
             )}

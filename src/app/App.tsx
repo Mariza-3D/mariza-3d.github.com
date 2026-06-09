@@ -1,14 +1,8 @@
-import { useState, lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import BackToTop from './components/BackToTop';
-import CookieConsent from './components/CookieConsent';
-import CustomCursor from './components/CustomCursor';
-import LoadingBar from './components/LoadingBar';
-import FloatingParticles from './components/FloatingParticles';
 import Navigation from './components/Navigation';
-import SplashScreen from './components/SplashScreen';
+import SectionErrorBoundary from './components/SectionErrorBoundary';
 
-// Lazy load heavy Three.js component
-const Text3DScene = lazy(() => import('./components/Text3DScene'));
 import Curriculum from './sections/Curriculum';
 import FAQ from './sections/FAQ';
 import FinalCTA from './sections/FinalCTA';
@@ -16,38 +10,32 @@ import Footer from './sections/Footer';
 import Hero from './sections/Hero';
 import InfoBar from './sections/InfoBar';
 import Instructor from './sections/Instructor';
-import ModelViewer from './sections/ModelViewer';
 import Pricing from './sections/Pricing';
 import SoftwareGrid from './sections/SoftwareGrid';
 import StudentResults from './sections/StudentResults';
 import Testimonials from './sections/Testimonials';
 
+const ModelViewer = lazy(() => import('./sections/ModelViewer'));
+
 export default function App() {
-  const [isLoaded, setIsLoaded] = useState(false);
-
   return (
-    <>
-      <LoadingBar />
-      <CustomCursor />
-      <CookieConsent />
-      {!isLoaded && <SplashScreen onLoadComplete={() => setIsLoaded(true)} />}
-
-      {/* Global 3D scene - fixed position, follows scroll, in background */}
-      <div className="fixed inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }}>
-        <Suspense fallback={null}>
-          <Text3DScene />
-        </Suspense>
-      </div>
-
-
-
-      <div className="min-h-screen text-white overflow-hidden relative">
-        {isLoaded && <Navigation />}
-        <FloatingParticles />
+    <div className="min-h-screen overflow-hidden bg-[#0b0f18] text-white">
+      <Navigation />
+      <main>
         <Hero />
         <InfoBar />
         <SoftwareGrid />
-        <ModelViewer />
+        <SectionErrorBoundary
+          fallback={
+            <section id="models" className="mx-auto max-w-[1200px] px-4 py-24 text-center text-[#d8deea]">
+              3D модельдер азыр жүктөлгөн жок, бирок курс программасы жана баалар төмөндө жеткиликтүү.
+            </section>
+          }
+        >
+          <Suspense fallback={<div className="mx-auto max-w-[1200px] px-4 py-24 text-center text-[#d8deea]">3D модельдер жүктөлүүдө...</div>}>
+            <ModelViewer />
+          </Suspense>
+        </SectionErrorBoundary>
         <StudentResults />
         <Instructor />
         <Curriculum />
@@ -57,7 +45,7 @@ export default function App() {
         <FinalCTA />
         <Footer />
         <BackToTop />
-      </div>
-    </>
+      </main>
+    </div>
   );
 }

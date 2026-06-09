@@ -1,229 +1,88 @@
-import { Check, Sparkles, Zap } from 'lucide-react';
+import { Check, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
-import { useEffect, useState } from 'react';
+import { contactLinks, pricingPlans } from '../siteData';
+
+const toneClasses: Record<string, string> = {
+  neutral: 'border-white/15 bg-white/[0.07] text-[#d8deea]',
+  teal: 'border-[#60e6d2]/35 bg-[#60e6d2]/[0.10] text-[#dffff9]',
+  orange: 'border-[#f8c85f]/40 bg-[#f8c85f]/[0.10] text-[#fff1bd]',
+};
+
+const buttonClasses: Record<string, string> = {
+  neutral: 'border-white/15 bg-white/[0.07] text-[#fff8ed] hover:bg-white/[0.11]',
+  teal: 'bg-[#60e6d2] text-[#081016] hover:bg-[#9afff1]',
+  orange: 'bg-[#f8c85f] text-[#11131a] hover:bg-[#ffe08a]',
+};
 
 const Pricing = () => {
-    const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, seconds: 0 });
-    const [isExpired, setIsExpired] = useState(false);
+  return (
+    <section id="pricing" className="relative px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1400px]">
+        <div className="mb-12 text-center">
+          <p className="section-kicker justify-center">Баалар</p>
+          <h2 className="section-title mx-auto mt-3">Өзүңө ылайыктуу форматты танда</h2>
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-[#c4ccd8]">
+            Үч формат: өз алдынча онлайн, кайтарым байланыш менен онлайн жана оффлайн premium окуу.
+          </p>
+        </div>
 
-    useEffect(() => {
-        const targetDate = new Date('2026-03-01T00:00:00');
+        <div className="grid gap-5 lg:grid-cols-3">
+          {pricingPlans.map((plan, index) => {
+            const isPremium = plan.tone === 'orange';
+            return (
+              <motion.article
+                key={plan.name}
+                initial={{ y: 26 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.28 }}
+                transition={{ delay: index * 0.07 }}
+                className={`relative flex min-h-[560px] flex-col rounded-lg border p-6 backdrop-blur-2xl ${
+                  isPremium
+                    ? 'border-[#f8c85f]/35 bg-gradient-to-b from-[#f8c85f]/16 to-[#111827]/70 shadow-[0_30px_110px_rgba(248,200,95,0.13)] lg:-mt-8'
+                    : 'border-white/10 bg-[#111827]/72'
+                }`}
+              >
+                {plan.badge && (
+                  <div className={`mb-5 inline-flex w-fit items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-black uppercase tracking-widest ${toneClasses[plan.tone]}`}>
+                    <Sparkles className="h-3.5 w-3.5" />
+                    {plan.badge}
+                  </div>
+                )}
 
-        const calculateTimeLeft = () => {
-            const now = new Date();
-            const difference = targetDate.getTime() - now.getTime();
+                <h3 className="text-3xl font-black text-[#fff8ed]">{plan.name}</h3>
+                <p className="mt-4 min-h-[56px] text-sm leading-7 text-[#c4ccd8]">{plan.description}</p>
 
-            if (difference > 0) {
-                setTimeLeft({
-                    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                    hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                    mins: Math.floor((difference / 1000 / 60) % 60),
-                    seconds: Math.floor((difference / 1000) % 60)
-                });
-                setIsExpired(false);
-            } else {
-                setTimeLeft({ days: 0, hours: 0, mins: 0, seconds: 0 });
-                setIsExpired(true);
-            }
-        };
-
-        calculateTimeLeft();
-        const timer = setInterval(calculateTimeLeft, 1000);
-
-        return () => clearInterval(timer);
-    }, []);
-
-
-    return (
-        <section id="pricing" className="py-24 px-4 sm:px-6 lg:px-8 relative">
-            <div className="max-w-[1400px] mx-auto">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.5 }}
-                    className="text-center mb-12"
-                >
-                    <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-teal-200 to-purple-200 bg-clip-text text-transparent">
-                        Баа
-                    </h2>
-                    <p className="text-xl text-gray-400 mb-6">Өзүңө ылайыктуу варианттты тандагыла</p>
-
-                    {/* Countdown Timer */}
-                    {!isExpired && (
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true, amount: 0.5 }}
-                            className="inline-flex items-center gap-4 bg-gradient-to-r from-orange-500/20 to-red-500/20 backdrop-blur-xl border border-orange-400/30 rounded-full px-6 py-3"
-                        >
-                            <Zap className="w-5 h-5 text-orange-400" />
-                            <span className="text-white font-semibold">1-мартка чейин арзандатуу:</span>
-                            <div className="flex gap-2 font-mono font-bold">
-                                <span className="bg-orange-500/30 px-2 py-1 rounded">{timeLeft.days}д</span>
-                                <span className="bg-orange-500/30 px-2 py-1 rounded">{timeLeft.hours}с</span>
-                                <span className="bg-orange-500/30 px-2 py-1 rounded">{timeLeft.mins}м</span>
-                                <span className="bg-orange-500/30 px-2 py-1 rounded">{timeLeft.seconds}сек</span>
-                            </div>
-                        </motion.div>
-                    )}
-                </motion.div>
-
-                <div className="grid lg:grid-cols-3 gap-8">
-                    {/* Online - Basic */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.5 }}
-                        transition={{ delay: 0 }}
-                        whileHover={{ y: -10 }}
-                        className="relative order-3 lg:order-1"
-                    >
-                        <div className="absolute -inset-1 bg-gradient-to-r from-[#5B4A9D] to-[#4a3d7e] rounded-[2.5rem] blur-lg opacity-30" />
-
-                        <div className="relative bg-white/5 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-8 h-full flex flex-col">
-                            <h3 className="text-3xl font-bold text-white mb-2">Онлайн</h3>
-                            <div className="mb-8">
-                                <span className="text-5xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">10 000</span>
-                                <span className="text-xl text-gray-400 ml-2">сом</span>
-                            </div>
-
-                            <ul className="space-y-4 mb-8 flex-1">
-                                {[
-                                    'Видео сабактар',
-                                    'Өз темпиңде окуу',
-                                    'Иштик материалдар',
-                                    'Чектелбеген мөөнөт',
-                                ].map((feature, i) => (
-                                    <li key={i} className="flex items-start gap-3">
-                                        <Check className="w-5 h-5 text-[#5B4A9D] flex-shrink-0 mt-0.5" />
-                                        <span className="text-gray-300">{feature}</span>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="w-full py-4 rounded-2xl border-2 border-white/30 text-white font-semibold hover:bg-white/10 transition-all"
-                            >
-                                Тандоо
-                            </motion.button>
-                        </div>
-                    </motion.div>
-
-                    {/* Premium - 40k (BEST CHOICE) */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.5 }}
-                        transition={{ delay: 0.1 }}
-                        whileHover={{ y: -15, scale: 1.03 }}
-                        className="relative lg:-mt-8 order-1 lg:order-2"
-                    >
-                        {/* Premium badge */}
-                        <motion.div
-                            className="absolute -top-6 left-1/2 -translate-x-1/2 z-20"
-                            animate={{ y: [0, -8, 0], scale: [1, 1.05, 1] }}
-                            transition={{ duration: 3, repeat: Infinity }}
-                        >
-                            <div className="bg-gradient-to-r from-[#FF6B35] via-[#FF0000] to-[#FF6B35] text-white px-8 py-3 rounded-full font-bold text-base shadow-2xl flex items-center gap-2 border-2 border-white/30">
-                                <Sparkles className="w-5 h-5 animate-pulse" /> PREMIUM
-                            </div>
-                        </motion.div>
-
-                        <div className="absolute -inset-2 bg-gradient-to-r from-[#FF6B35] via-[#FF0000] to-[#5B4A9D] rounded-[3rem] blur-2xl opacity-60 animate-pulse" />
-
-                        <div className="relative bg-gradient-to-br from-white/15 to-white/10 backdrop-blur-2xl border-4 border-[#FF6B35]/60 rounded-[3rem] p-10 h-full flex flex-col shadow-2xl">
-                            <h3 className="text-4xl font-bold bg-gradient-to-r from-[#FF6B35] to-[#FF0000] bg-clip-text text-transparent mb-3">Premium Оффлайн</h3>
-                            <div className="mb-8">
-                                <span className="text-6xl font-bold bg-gradient-to-r from-[#FF6B35] via-[#FF0000] to-[#FF6B35] bg-clip-text text-transparent">40 000</span>
-                                <span className="text-2xl text-gray-300 ml-2">сом</span>
-                                <div className="text-sm font-semibold text-[#FF6B35] mt-2 flex items-center gap-2">
-                                    <Zap className="w-4 h-4" /> Эң мыкты тандоо!
-                                </div>
-                            </div>
-
-                            <ul className="space-y-5 mb-10 flex-1">
-                                {[
-                                    'Класста VIP сабак',
-                                    'Тура аралашуу окутуучу менен',
-                                    'Жеке консультациялар',
-                                    'Бардык материалдар + Bonus',
-                                    '6 ай жеке колдоо',
-                                    'Сертификат жана портфолио',
-                                ].map((feature, i) => (
-                                    <li key={i} className="flex items-start gap-3">
-                                        <div className="w-6 h-6 rounded-full bg-gradient-to-r from-[#FF6B35] to-[#FF0000] flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <Check className="w-4 h-4 text-white" strokeWidth={3} />
-                                        </div>
-                                        <span className="text-white font-semibold">{feature}</span>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <motion.button
-                                whileHover={{ scale: 1.05, boxShadow: '0 0 60px rgba(255, 107, 53, 0.8)' }}
-                                whileTap={{ scale: 0.97 }}
-                                className="w-full py-5 rounded-2xl bg-gradient-to-r from-[#FF6B35] via-[#FF0000] to-[#FF6B35] text-white font-bold text-lg shadow-2xl relative overflow-hidden group"
-                            >
-                                <span className="relative z-10">Азыр эле жазылуу!</span>
-                                <motion.div
-                                    className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"
-                                    initial={{ x: '-100%' }}
-                                    whileHover={{ x: '100%' }}
-                                    transition={{ duration: 0.5 }}
-                                />
-                            </motion.button>
-                        </div>
-                    </motion.div>
-
-                    {/* Online + Support */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.5 }}
-                        transition={{ delay: 0.2 }}
-                        whileHover={{ y: -10 }}
-                        className="relative order-2 lg:order-3"
-                    >
-                        <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-[2.5rem] blur-lg opacity-30" />
-
-                        <div className="relative bg-white/5 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-8 h-full flex flex-col">
-                            <h3 className="text-3xl font-bold text-white mb-2">Онлайн + Колдоо</h3>
-                            <div className="mb-8">
-                                <span className="text-5xl font-bold bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">20 000</span>
-                                <span className="text-xl text-gray-400 ml-2">сом</span>
-                                <div className="text-sm text-teal-400 mt-1">Орундар чектелүү: 12 калды</div>
-                            </div>
-
-                            <ul className="space-y-4 mb-8 flex-1">
-                                {[
-                                    'Онлайн сабактар',
-                                    'Видео жазуулар',
-                                    'Telegram колдоо',
-                                    'Иштик материалдар',
-                                    '3 ай колдоо',
-                                ].map((feature, i) => (
-                                    <li key={i} className="flex items-start gap-3">
-                                        <Check className="w-5 h-5 text-teal-400 flex-shrink-0 mt-0.5" />
-                                        <span className="text-gray-300">{feature}</span>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="w-full py-4 rounded-2xl bg-gradient-to-r from-teal-400 to-cyan-400 text-gray-900 font-semibold hover:shadow-lg transition-all"
-                            >
-                                Тандоо
-                            </motion.button>
-                        </div>
-                    </motion.div>
+                <div className="my-8">
+                  <span className="text-5xl font-black text-[#fff8ed]">{plan.price}</span>
+                  <span className="ml-2 text-lg font-bold text-[#aeb8c7]">сом</span>
                 </div>
-            </div>
-        </section>
-    );
+
+                <ul className="mb-8 grid flex-1 gap-3">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex gap-3 text-base leading-7 text-[#d8deea]">
+                      <span className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[#60e6d2]/14 text-[#bffbf3]">
+                        <Check className="h-3.5 w-3.5" />
+                      </span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <a
+                  href={contactLinks.whatsapp}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`inline-flex min-h-14 items-center justify-center rounded-lg px-5 py-4 text-base font-black transition-colors ${buttonClasses[plan.tone]}`}
+                >
+                  Тандоо
+                </a>
+              </motion.article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default Pricing;

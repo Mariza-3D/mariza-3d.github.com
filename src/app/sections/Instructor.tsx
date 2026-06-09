@@ -1,92 +1,65 @@
-import { Award, TrendingUp, Users } from 'lucide-react';
+import { Award, Layers3, TrendingUp, Users } from 'lucide-react';
 import { motion } from 'motion/react';
 
+const stats = [
+  { icon: Award, value: '5+', label: 'Жыл тажрыйба' },
+  { icon: Users, value: '300+', label: 'Студент' },
+  { icon: TrendingUp, value: '92%', label: 'Ийгилик' },
+];
+
 const Instructor = () => {
-    return (
-        <section id="instructor" className="py-24 px-4 sm:px-6 lg:px-8 relative">
-            <div className="max-w-[1200px] mx-auto">
-                <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.5 }}
-                    className="relative"
-                >
-                    <div className="absolute -inset-1 bg-gradient-to-r from-teal-400 via-purple-400 to-pink-400 rounded-[3rem] blur-2xl opacity-30" />
-
-                    <div className="relative bg-white/5 backdrop-blur-2xl border border-white/20 rounded-[3rem] p-8 sm:p-12 overflow-hidden">
-                        <div className="grid lg:grid-cols-2 gap-12 items-center">
-                            {/* Instructor Image */}
-                            <motion.div
-                                whileHover={{ scale: 1.05, rotateY: 10 }}
-                                className="relative"
-                                style={{ perspective: 1000 }}
-                            >
-                                <div className="aspect-square max-w-md mx-auto rounded-3xl overflow-hidden border-4 border-teal-400/30 shadow-2xl">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1589442694956-9eaf242dd1fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600"
-                                        alt="Instructor"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                                <motion.div
-                                    className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-teal-400 to-purple-400 rounded-3xl flex items-center justify-center shadow-2xl"
-                                    animate={{ rotate: [0, 360] }}
-                                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                                >
-                                    <Award className="w-12 h-12 text-white" />
-                                </motion.div>
-                            </motion.div>
-
-                            {/* Instructor Info */}
-                            <div>
-                                <h2 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent">
-                                    Мариза Мырзабаева
-                                </h2>
-                                <p className="text-teal-400 text-xl mb-6">3D Моделлөөчү & Анимация эксперти</p>
-
-                                <p className="text-gray-300 mb-8 leading-relaxed text-lg">
-                                    2020-жылдан бери 3D моделлөө менен алектенүүдө, 5+ жылдык тажрыйба. 300+ студентти окутуп, алардын көпчүлүгү азыр фриланс жана YouTube боюнча ийгиликтүү иштешет. Blender, iClone 8 жана After Effects боюнча сертификатталган тренер.
-                                </p>
-
-                                {/* Stats */}
-                                <div className="grid grid-cols-3 gap-6">
-                                    {[
-                                        { icon: Award, value: '5+', label: 'Жыл тажрыйба' },
-                                        { icon: Users, value: '300+', label: 'Студент' },
-                                        { icon: TrendingUp, value: '92%', label: 'Ийгилик' },
-                                    ].map((stat, i) => (
-                                        <motion.div
-                                            key={i}
-                                            initial={{ opacity: 0, scale: 0.5 }}
-                                            whileInView={{ opacity: 1, scale: 1 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: i * 0.1 }}
-                                            whileHover={{ scale: 1.1 }}
-                                            className="text-center"
-                                        >
-                                            <div className="w-14 h-14 bg-gradient-to-br from-teal-400/20 to-purple-400/20 rounded-2xl mx-auto mb-2 flex items-center justify-center border border-teal-400/30">
-                                                <stat.icon className="w-7 h-7 text-teal-400" />
-                                            </div>
-                                            <motion.p
-                                                className="text-2xl font-bold text-white mb-1"
-                                                initial={{ scale: 1 }}
-                                                whileInView={{ scale: [1, 1.2, 1] }}
-                                                viewport={{ once: true }}
-                                                transition={{ delay: i * 0.1 + 0.5 }}
-                                            >
-                                                {stat.value}
-                                            </motion.p>
-                                            <p className="text-xs text-gray-400">{stat.label}</p>
-                                        </motion.div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </motion.div>
+  return (
+    <section id="instructor" className="relative px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1200px]">
+        <motion.div
+          initial={{ y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          className="grid overflow-hidden rounded-lg border border-white/10 bg-[#111827]/72 shadow-[0_28px_110px_rgba(0,0,0,0.34)] backdrop-blur-2xl lg:grid-cols-[0.92fr_1.08fr]"
+        >
+          <div className="relative min-h-[420px] overflow-hidden bg-[#101722]">
+            <div className="instructor-lines" aria-hidden="true" />
+            <img
+              src="https://images.unsplash.com/photo-1589442694956-9eaf242dd1fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=900"
+              alt="Мариза Мырзабаева"
+              className="h-full min-h-[420px] w-full object-cover opacity-80"
+            />
+            <div className="absolute inset-x-6 bottom-6 rounded-lg border border-white/10 bg-black/45 p-5 backdrop-blur-2xl">
+              <div className="flex items-center gap-3">
+                <div className="grid h-12 w-12 place-items-center rounded-lg bg-[#60e6d2] text-[#081016]">
+                  <Layers3 className="h-6 w-6" />
+                </div>
+                <div>
+                  <p className="text-sm text-[#d8deea]">3D Моделлөөчү & Анимация эксперти</p>
+                  <p className="text-lg font-black text-[#fff8ed]">Мариза Мырзабаева</p>
+                </div>
+              </div>
             </div>
-        </section>
-    );
+          </div>
+
+          <div className="p-7 sm:p-10 lg:p-12">
+            <p className="section-kicker">Устат</p>
+            <h2 className="mt-3 text-4xl font-black leading-tight text-[#fff8ed] sm:text-5xl">Практикадан чыккан окуу</h2>
+            <p className="mt-6 text-lg leading-8 text-[#d8deea]">
+              2020-жылдан бери 3D моделлөө менен алектенүүдө, 5+ жылдык тажрыйба. 300+ студентти окутуп, алардын көпчүлүгү азыр фриланс жана YouTube боюнча ийгиликтүү иштешет. Blender, iClone 8 жана After Effects боюнча сертификатталган тренер.
+            </p>
+
+            <div className="mt-10 grid grid-cols-3 gap-3">
+              {stats.map((stat) => (
+                <div key={stat.label} className="rounded-lg border border-white/10 bg-[#182131]/72 p-4 text-center">
+                  <div className="mx-auto mb-3 grid h-11 w-11 place-items-center rounded-lg bg-[#60e6d2]/12 text-[#bffbf3]">
+                    <stat.icon className="h-5 w-5" />
+                  </div>
+                  <p className="text-2xl font-black text-[#fff8ed]">{stat.value}</p>
+                  <p className="mt-1 text-xs leading-5 text-[#aeb8c7]">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
 };
 
 export default Instructor;

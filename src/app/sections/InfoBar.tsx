@@ -1,42 +1,41 @@
-import { Calendar, Clock, MessageCircle } from 'lucide-react';
+import { CalendarClock, GraduationCap, MessageCircle, MonitorPlay } from 'lucide-react';
 import { motion } from 'motion/react';
 
-const InfoBar = () => {
-    return (
-        <section className="py-12 px-4 sm:px-6 lg:px-8 relative">
-            <div className="max-w-[1400px] mx-auto">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    {[
-                        { icon: Calendar, label: 'Башталышы', value: '1-март', color: 'from-teal-400 to-cyan-400' },
-                        { icon: Clock, label: 'Узактыгы', value: '1,5 ай', color: 'from-purple-400 to-pink-400' },
-                        { icon: MessageCircle, label: 'Кайтарым байланыш', value: '3 ай', color: 'from-orange-400 to-red-400' },
-                    ].map((item, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
-                            whileHover={{ y: -5, scale: 1.02 }}
-                            className="relative group"
-                        >
-                            <div className={`absolute inset-0 bg-gradient-to-r ${item.color} opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl blur-xl -z-10`} />
+const items = [
+  { icon: CalendarClock, label: 'Башталышы', value: 'Жаңы агым', note: 'алдын ала катталуу жүрүп жатат' },
+  { icon: MonitorPlay, label: 'Формат', value: 'Онлайн / оффлайн', note: 'видео, практика жана класс' },
+  { icon: GraduationCap, label: 'Узактыгы', value: '1,5 ай', note: 'нөлдөн портфолиого чейин' },
+  { icon: MessageCircle, label: 'Колдоо', value: '3 ай', note: 'тапшырмаларга кайтарым байланыш' },
+];
 
-                            <div className="flex items-center gap-4 bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-3xl hover:bg-white/10 transition-all">
-                                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center shadow-lg`}>
-                                    <item.icon className="w-7 h-7 text-white" />
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-400">{item.label}</p>
-                                    <p className="font-bold text-xl text-white">{item.value}</p>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
+const InfoBar = () => {
+  return (
+    <section className="relative px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1400px]">
+        <div className="grid gap-4 rounded-lg border border-white/10 bg-[#111827]/72 p-3 shadow-[0_24px_90px_rgba(0,0,0,0.24)] backdrop-blur-2xl sm:grid-cols-2 lg:grid-cols-4">
+          {items.map((item, index) => (
+            <motion.div
+              key={item.label}
+              initial={{ y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.06 }}
+              className="rounded-lg border border-white/[0.08] bg-[#182131]/72 p-5"
+            >
+              <div className="mb-5 flex items-center justify-between">
+                <div className="grid h-11 w-11 place-items-center rounded-lg bg-[#60e6d2]/12 text-[#bffbf3]">
+                  <item.icon className="h-5 w-5" />
                 </div>
-            </div>
-        </section>
-    );
+                <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#8f9bad]">{item.label}</span>
+              </div>
+              <p className="text-2xl font-black text-[#fff8ed]">{item.value}</p>
+              <p className="mt-2 text-sm leading-6 text-[#c4ccd8]">{item.note}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default InfoBar;
